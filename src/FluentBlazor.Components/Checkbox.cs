@@ -32,8 +32,8 @@ namespace FluentBlazor.Components
             eventContainer.Clear();
 
 
-            if (!FluentComponentAttributes.ContainsKey("componentName"))
-                FluentComponentAttributes.Add("componentName", "Checkbox");
+            //if (!FluentComponentAttributes.ContainsKey("componentName"))
+            //    FluentComponentAttributes.Add("componentName", "Checkbox");
 
             FluentComponentAttributes["checked"] = Checked;
             FluentComponentAttributes["label"] = Label;

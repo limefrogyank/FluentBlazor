@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,39 +6,39 @@ using System.Threading.Tasks;
 
 namespace FluentBlazor.Components
 {
-    public class PrimaryButton : FluentBase, IHasChildren
+    public class Dialog : FluentBase, IHasChildren
     {
+
         [Parameter]
-        public EventCallback OnClick { get; set; }
+        public EventCallback OnDismiss { get; set; }
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
         [Parameter]
-        public string Text { get; set; }
+        public object DialogContentProps { get; set; }
+
+        [Parameter]
+        public bool Hidden { get; set; }
 
         protected override void OnInitialized()
         {
-            ComponentName = "PrimaryButton";
+            ComponentName = "Dialog";
             base.OnInitialized();
         }
-
-
 
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();
 
-            //if (!FluentComponentAttributes.ContainsKey("componentName"))
-            //    FluentComponentAttributes.Add("componentName", "PrimaryButton");
+            FluentComponentAttributes["dialogContentProps"] = DialogContentProps;
+            FluentComponentAttributes["hidden"] = Hidden;
 
-            FluentComponentAttributes["text"] = Text;
-
-            if (OnClick.HasDelegate)
+            if (OnDismiss.HasDelegate)
             {
-                eventContainer.Add(new TranslatedEvent("onClick", OnClick));
+                eventContainer.Add(new TranslatedEvent("onDismiss", OnDismiss));
             }
-            
+
         }
 
     }

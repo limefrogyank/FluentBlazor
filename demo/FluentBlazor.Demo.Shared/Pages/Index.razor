@@ -25,6 +25,14 @@
     <FluentText>
         @debug
     </FluentText>
+    <PrimaryButton Text="Launch Dialog" OnClick=@(() => dialogIsHidden = false) />
+
+    <FluentText Variant="large">
+        Try launching a dialog window.
+    </FluentText>
+    <Dialog Hidden=@dialogIsHidden OnDismiss=@(()=> dialogIsHidden=true) DialogContentProps=@(new { title = "Dialog Test Title" })>
+        <FluentText>This is inside the dialog!</FluentText>
+    </Dialog>
 </Stack>
 
 
@@ -33,4 +41,5 @@
     int count = 0;
 
     bool isChecked = false;
+    bool dialogIsHidden = true;
 }

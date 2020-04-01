@@ -21,8 +21,8 @@ namespace FluentBlazor.Components
         {
             await base.OnParametersSetAsync();
 
-            if (!FluentComponentAttributes.ContainsKey("componentName"))
-                FluentComponentAttributes.Add("componentName", "FocusZone");
+            //if (!FluentComponentAttributes.ContainsKey("componentName"))
+            //    FluentComponentAttributes.Add("componentName", "FocusZone");
         }
 
     }
