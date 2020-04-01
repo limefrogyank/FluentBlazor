@@ -1,0 +1,21 @@
+﻿@*@inherits FrozenComponentBase*@
+<CascadingValue Name="FluentParent" Value="this">
+    @if (FluentParent == null)
+    {
+        <div id=@id>
+            @if (this is IHasChildren && !needsRestoreInnerChildren)
+            {
+                @((this as IHasChildren).ChildContent)
+            }
+        </div>
+    }
+    else
+    {
+        //Create react component on parent.
+        SelfChild = FluentParent.CreateReactChildComponent(this, FluentComponentAttributes, GetSerializedEvents(), FluentParent.SelfChild);
+        @if (this is IHasChildren && !needsRestoreInnerChildren)
+        {
+            @((this as IHasChildren).ChildContent)
+        }
+    }
+</CascadingValue>
