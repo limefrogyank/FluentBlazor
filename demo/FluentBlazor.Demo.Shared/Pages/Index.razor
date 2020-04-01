@@ -1,28 +1,32 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
+<FluentText Variant="xxLarge">
+    These are react components wrapped by Blazor components.
+</FluentText>
+<FluentText Variant="large">
+    All of these components are wrapped by a Stack component.
+</FluentText>
 <Stack Tokens=@(new { childrenGap = 10 })>
     <PrimaryButton Text="This is a sample" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
     <PrimaryButton Text="Here is button 2" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
     <PrimaryButton Text="And button 3, too" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
 
-    <Checkbox Label="Testing Checkbox" Checked=@isChecked 
-              OnChange=@(()=> { isChecked = !isChecked; })/>
+    <Checkbox Label="Testing Checkbox" Checked=@isChecked
+              OnChange=@(()=> { isChecked = !isChecked; }) />
 
+    <FluentText>
+        These buttons are in a FocusZone:
+    </FluentText>
     <FocusZone>
         <PrimaryButton Text="Inner Button" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
         <PrimaryButton Text="Inner Button 2" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
         <PrimaryButton Text="Inner Button 3" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
-        @*<FluentBlazor.Components.PrimaryButton text="Here is button 2" />
-            <FluentBlazor.Components.PrimaryButton text="And button 3, too" />*@
     </FocusZone>
+    <FluentText>
+        @debug
+    </FluentText>
 </Stack>
-@*<FluentBlazor.Components.PrimaryButton />*@
 
-@debug
 
 @code{
     string debug = "";

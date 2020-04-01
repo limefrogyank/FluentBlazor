@@ -25,7 +25,7 @@ namespace FluentBlazor.Components
             await base.OnParametersSetAsync();
 
             if (!FluentComponentAttributes.ContainsKey("componentName"))
-                FluentComponentAttributes.Add("componentName", "Stack");
+                FluentComponentAttributes.Add("componentName", ComponentName);
 
             FluentComponentAttributes["tokens"] = Tokens;
 

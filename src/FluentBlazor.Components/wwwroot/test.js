@@ -76,10 +76,14 @@ function incorporateEvents(params, serializedEvents) {
     });
     return params;
 }
+function getTextContent(element) {
+    return element.innerText;
+}
 let components = {
     "Checkbox": Checkbox,
     "FocusZone": FocusZone,
     "PrimaryButton": PrimaryButton,
-    "Stack": Stack
+    "Stack": Stack,
+    "Text": window.Fabric.Text
 };
 //# sourceMappingURL=test.js.map

@@ -110,9 +110,14 @@ function incorporateEvents(params: any, serializedEvents: SerializedEvent[]) : a
     return params;
 }
 
+function getTextContent(element: HTMLElement): string {
+    return element.innerText;
+}
+
 let components = {
     "Checkbox": Checkbox,
     "FocusZone": FocusZone,
     "PrimaryButton": PrimaryButton,
-    "Stack": Stack
+    "Stack": Stack,
+    "Text": (window as any).Fabric.Text
 }

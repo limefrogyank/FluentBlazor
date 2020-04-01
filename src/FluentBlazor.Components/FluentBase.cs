@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace FluentBlazor.Components
 {
@@ -35,6 +36,16 @@ namespace FluentBlazor.Components
 
 
 
+        protected override async Task OnParametersSetAsync()
+        {
+            reactChildren.Clear();
+
+            if (!FluentComponentAttributes.ContainsKey("componentName"))
+                FluentComponentAttributes.Add("componentName", ComponentName);
+
+            await base.OnParametersSetAsync();
+        }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (SelfChild != null)
@@ -45,6 +56,15 @@ namespace FluentBlazor.Components
 
             if (FluentParent == null)
             {
+                //Process IHasTextContent for current component
+                if (this is IHasTextContent)
+                {
+                    var text = await JSRuntime.InvokeAsync<string>("getTextContent", (this as IHasTextContent).TextContainingReference);
+                    FluentComponentAttributes["children"] = text;
+                }
+                //Add text content to any reactChildren that implement IHasTextContent
+                await ProcessTextContentAsync(reactChildren);
+
                 if (firstRender)
                 {
                     needsRestoreInnerChildren = await JSRuntime.InvokeAsync<bool>("createComponent", id, FluentComponentAttributes, GetSerializedEvents(), reactChildren);
@@ -58,11 +78,6 @@ namespace FluentBlazor.Components
             await base.OnAfterRenderAsync(firstRender);
         }
 
-        protected override async Task OnParametersSetAsync()
-        {
-            reactChildren.Clear();
-            await base.OnParametersSetAsync();
-        }
 
         private IEnumerable<SerializedEvent> GetSerializedEvents()
         {
@@ -85,6 +100,19 @@ namespace FluentBlazor.Components
             return child;
         }
 
+        private async Task ProcessTextContentAsync(IEnumerable<ReactChild> children)
+        {
+            foreach (var child in children)
+            {
+                if (child.Self is IHasTextContent)
+                {
+                    var text = await JSRuntime.InvokeAsync<string>("getTextContent", (child.Self as IHasTextContent).TextContainingReference);
+                    child.parameters["children"] = text;
+                }
+                await ProcessTextContentAsync(child.children);
+            }
+        }
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             base.BuildRenderTree(builder);
@@ -98,9 +126,15 @@ namespace FluentBlazor.Components
                 {
                     builder2.OpenElement(4, "div");
                     builder2.AddAttribute(5, "id", id);
+                    builder2.AddAttribute(6, "style", "display:none;");
                     if (this is IHasChildren)
                     {
-                        builder2.AddContent(6, (this as IHasChildren).ChildContent);
+                        builder2.AddContent(7, (this as IHasChildren).ChildContent);
+                    }
+                    else if (this is IHasTextContent)
+                    {
+                        builder2.AddContent(7, (this as IHasTextContent).ChildContent);
+                        builder2.AddElementReferenceCapture(8, elementRef => (this as IHasTextContent).TextContainingReference = elementRef);
                     }
                     builder2.CloseElement();
                 }
@@ -112,6 +146,14 @@ namespace FluentBlazor.Components
                     if (this is IHasChildren)
                     {
                         builder2.AddContent(5, (this as IHasChildren).ChildContent);
+                    }
+                    else if (this is IHasTextContent)
+                    {
+                        builder2.AddContent(5, (this as IHasTextContent).ChildContent);
+                        builder2.AddElementReferenceCapture(6, elementRef =>
+                        {
+                            (this as IHasTextContent).TextContainingReference = elementRef;
+                        });
                     }
                     builder2.CloseElement();
 
