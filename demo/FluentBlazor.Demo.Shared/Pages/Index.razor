@@ -1,0 +1,32 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<Stack Tokens=@(new { childrenGap = 10 })>
+    <PrimaryButton Text="This is a sample" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
+    <PrimaryButton Text="Here is button 2" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
+    <PrimaryButton Text="And button 3, too" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
+
+    <Checkbox Label="Testing Checkbox" Checked=@isChecked 
+              OnChange=@(()=> { isChecked = !isChecked; })/>
+
+    <FocusZone>
+        <PrimaryButton Text="Inner Button" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
+        <PrimaryButton Text="Inner Button 2" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
+        <PrimaryButton Text="Inner Button 3" OnClick=@(()=> { debug = $"Clicked {++count}"; }) />
+        @*<FluentBlazor.Components.PrimaryButton text="Here is button 2" />
+            <FluentBlazor.Components.PrimaryButton text="And button 3, too" />*@
+    </FocusZone>
+</Stack>
+@*<FluentBlazor.Components.PrimaryButton />*@
+
+@debug
+
+@code{
+    string debug = "";
+    int count = 0;
+
+    bool isChecked = false;
+}

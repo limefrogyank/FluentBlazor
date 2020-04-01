@@ -6,21 +6,17 @@ class BlazorComponent extends React.Component {
         super(props);
     }
     render() {
-        console.log(this.props.componentName);
         let FluentComponent = components[this.props.componentName];
         return (React.createElement(FFabric, null,
             React.createElement(FluentComponent, Object.assign({}, this.props))));
     }
 }
-const inner = new Map();
 function createComponent(id, parameters, serializedEvents, children) {
     const domContainer = document.querySelector("#" + id);
+    let reactContainer = document.createElement("div");
+    domContainer.parentNode.insertBefore(reactContainer, domContainer.nextSibling);
     let restore = false;
-    //if (domContainer.innerHTML !== "") {
-    inner.set(id, domContainer.innerHTML);
-    //}
     restore = true;
-    console.log(serializedEvents);
     // make events that callback .net functions
     let moddedParams = incorporateEvents(parameters, serializedEvents);
     // generate proper react children
@@ -28,14 +24,38 @@ function createComponent(id, parameters, serializedEvents, children) {
     if (children) {
         convertedChildren = processChildren(children);
     }
-    console.log(moddedParams);
     if (convertedChildren.length > 0) {
-        ReactDOM.render(React.createElement(BlazorComponent, moddedParams, ...convertedChildren), domContainer);
+        let reactElement = React.createElement(BlazorComponent, moddedParams, ...convertedChildren);
+        ReactDOM.render(reactElement, reactContainer);
     }
     else {
-        ReactDOM.render(React.createElement(BlazorComponent, moddedParams), domContainer);
+        let reactElement = React.createElement(BlazorComponent, moddedParams);
+        ReactDOM.render(reactElement, reactContainer);
     }
     return restore;
+}
+function updateComponent(id, parameters, serializedEvents, children) {
+    const domContainer = document.querySelector("#" + id);
+    const reactContainer = domContainer.nextSibling;
+    // make events that callback .net functions
+    let moddedParams = incorporateEvents(parameters, serializedEvents);
+    // generate proper react children
+    let convertedChildren = [];
+    if (children) {
+        convertedChildren = processChildren(children);
+    }
+    //    console.log(moddedParams);
+    if (convertedChildren.length > 0) {
+        let reactElement = React.createElement(BlazorComponent, moddedParams, ...convertedChildren);
+        //        reactElements.set(id, reactElement);
+        ReactDOM.render(reactElement, reactContainer);
+    }
+    else {
+        let reactElement = React.createElement(BlazorComponent, moddedParams);
+        //        reactElements.set(id, reactElement);
+        ReactDOM.render(reactElement, reactContainer);
+    }
+    return true;
 }
 function processChildren(children) {
     let convertedChildren = [];
@@ -47,16 +67,12 @@ function processChildren(children) {
     });
     return convertedChildren;
 }
-function restoreInnerContent(id) {
-    //    inner.forEach((v, k) => {
-    const domContainer = document.querySelector("#" + id);
-    ReactDOM.unmountComponentAtNode(domContainer);
-    domContainer.innerHTML = inner.get(id);
-    //    });
-}
+//function restoreInnerContent(id :string) {
+//    const domContainer = document.querySelector("#" + id);
+//}
 function incorporateEvents(params, serializedEvents) {
     serializedEvents.forEach((v, i) => {
-        params[v.eventName] = () => v.dotNetRef.invokeMethodAsync("InvokableEvent");
+        params[v.eventName] = () => { v.dotNetRef.invokeMethodAsync("InvokableEvent"); console.log("event invoked"); };
     });
     return params;
 }

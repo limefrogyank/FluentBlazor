@@ -11,6 +11,12 @@ namespace FluentBlazor.Components
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        protected override void OnInitialized()
+        {
+            ComponentName = "FocusZone";
+            base.OnInitialized();
+        }
+
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();

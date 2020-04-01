@@ -14,5 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentBlazor.Components\FluentBlazor.Components.csproj" />
+    <ProjectReference Include="..\FluentBlazor.Demo.Shared\FluentBlazor.Demo.Shared.csproj" />
   </ItemGroup>
 </Project>

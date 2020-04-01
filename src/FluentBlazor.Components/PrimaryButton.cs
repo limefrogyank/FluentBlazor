@@ -15,10 +15,15 @@ namespace FluentBlazor.Components
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        [Parameter]
+        public string Text { get; set; }
+
         protected override void OnInitialized()
-        {            
+        {
+            ComponentName = "PrimaryButton";
             base.OnInitialized();
         }
+
 
 
         protected override async Task OnParametersSetAsync()
@@ -27,10 +32,9 @@ namespace FluentBlazor.Components
 
             if (!FluentComponentAttributes.ContainsKey("componentName"))
                 FluentComponentAttributes.Add("componentName", "PrimaryButton");
-            
 
-            //eventContainer.Clear();  //memory leaks maybe, need to dispose dotnetobject refs
-            
+            FluentComponentAttributes["text"] = Text;
+
             if (OnClick.HasDelegate)
             {
                 eventContainer.Add(new TranslatedEvent("onClick", OnClick));

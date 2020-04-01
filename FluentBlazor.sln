@@ -9,9 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{756FA8E7-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{A9429AFA-BF6D-439F-9D7B-4089F9CFB35E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentBlazor.Components", "src\FluentBlazor.Components\FluentBlazor.Components.csproj", "{6C25516F-7686-460C-B659-6CCC7F2DE26A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBlazor.Components", "src\FluentBlazor.Components\FluentBlazor.Components.csproj", "{6C25516F-7686-460C-B659-6CCC7F2DE26A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentBlazor.Demo.ServerSide", "demo\Demo.ServerSide\FluentBlazor.Demo.ServerSide.csproj", "{500FFDA3-8D1B-4721-B28F-6A99DF2F93C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBlazor.Demo.ServerSide", "demo\Demo.ServerSide\FluentBlazor.Demo.ServerSide.csproj", "{500FFDA3-8D1B-4721-B28F-6A99DF2F93C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentBlazor.Demo.Shared", "demo\FluentBlazor.Demo.Shared\FluentBlazor.Demo.Shared.csproj", "{17AC02FE-8A4A-4F36-8BD4-194859814BE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{500FFDA3-8D1B-4721-B28F-6A99DF2F93C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{500FFDA3-8D1B-4721-B28F-6A99DF2F93C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{500FFDA3-8D1B-4721-B28F-6A99DF2F93C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17AC02FE-8A4A-4F36-8BD4-194859814BE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17AC02FE-8A4A-4F36-8BD4-194859814BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17AC02FE-8A4A-4F36-8BD4-194859814BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17AC02FE-8A4A-4F36-8BD4-194859814BE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 		{C7CCC6A1-9332-4BCE-B807-1B0054FDCEFF} = {756FA8E7-6116-4A1A-8BD3-8A556EEA656B}
 		{6C25516F-7686-460C-B659-6CCC7F2DE26A} = {A9429AFA-BF6D-439F-9D7B-4089F9CFB35E}
 		{500FFDA3-8D1B-4721-B28F-6A99DF2F93C8} = {756FA8E7-6116-4A1A-8BD3-8A556EEA656B}
+		{17AC02FE-8A4A-4F36-8BD4-194859814BE0} = {756FA8E7-6116-4A1A-8BD3-8A556EEA656B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {62EB99D2-5820-4382-8409-D8BEDCFA3F0D}

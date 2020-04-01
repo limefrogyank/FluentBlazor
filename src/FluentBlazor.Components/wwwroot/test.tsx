@@ -1,5 +1,4 @@
 ﻿'use strict';
-//const e = React.createElement;
 
 interface DotNetReferenceType {
     //invokeMethod<T>(methodIdentifier: string, ...args: any[]): T;
@@ -26,9 +25,7 @@ class BlazorComponent extends React.Component<any,any> {
     }
 
     render() {
-        console.log(this.props.componentName);
         let FluentComponent = components[this.props.componentName];
-
 
         return (
             <FFabric>
@@ -38,17 +35,36 @@ class BlazorComponent extends React.Component<any,any> {
     }
 }
 
-const inner: Map<string, string> = new Map<string, string>();
 
 function createComponent(id: string, parameters: any, serializedEvents: SerializedEvent[], children: IChild[]) {
     const domContainer = document.querySelector("#" + id);
+    let reactContainer = document.createElement("div");
+    domContainer.parentNode.insertBefore(reactContainer, domContainer.nextSibling);
     let restore : boolean = false;
-    //if (domContainer.innerHTML !== "") {
-        inner.set(id, domContainer.innerHTML);
-        
-    //}
     restore = true;
-    console.log(serializedEvents);
+    
+    // make events that callback .net functions
+    let moddedParams = incorporateEvents(parameters, serializedEvents);
+
+    // generate proper react children
+    let convertedChildren = [];
+    if (children) {
+        convertedChildren = processChildren(children);
+    }
+
+    if (convertedChildren.length > 0) {
+        let reactElement = React.createElement(BlazorComponent, moddedParams, ...convertedChildren);
+        ReactDOM.render(reactElement, reactContainer);
+    } else {
+        let reactElement = React.createElement(BlazorComponent, moddedParams);
+        ReactDOM.render(reactElement, reactContainer);
+    }
+    return restore;
+}
+
+function updateComponent(id: string, parameters: any, serializedEvents: SerializedEvent[], children: IChild[]) {
+    const domContainer = document.querySelector("#" + id);
+    const reactContainer = domContainer.nextSibling as Element;
 
     // make events that callback .net functions
     let moddedParams = incorporateEvents(parameters, serializedEvents);
@@ -59,13 +75,17 @@ function createComponent(id: string, parameters: any, serializedEvents: Serializ
         convertedChildren = processChildren(children);
     }
 
-    console.log(moddedParams);
+//    console.log(moddedParams);
     if (convertedChildren.length > 0) {
-        ReactDOM.render(React.createElement(BlazorComponent, moddedParams, ...convertedChildren), domContainer);
+        let reactElement = React.createElement(BlazorComponent, moddedParams, ...convertedChildren);
+//        reactElements.set(id, reactElement);
+        ReactDOM.render(reactElement, reactContainer);
     } else {
-        ReactDOM.render(React.createElement(BlazorComponent, moddedParams), domContainer);
+        let reactElement = React.createElement(BlazorComponent, moddedParams);
+//        reactElements.set(id, reactElement);
+        ReactDOM.render(reactElement, reactContainer);
     }
-    return restore;
+    return true;
 }
 
 function processChildren(children: IChild[]): any[] {
@@ -79,20 +99,14 @@ function processChildren(children: IChild[]): any[] {
     return convertedChildren;
 }
 
-function restoreInnerContent(id :string) {
-//    inner.forEach((v, k) => {
-    const domContainer = document.querySelector("#" + id);
-    ReactDOM.unmountComponentAtNode(domContainer);
-    domContainer.innerHTML = inner.get(id);
-//    });
-}
+//function restoreInnerContent(id :string) {
+//    const domContainer = document.querySelector("#" + id);
+//}
 
 function incorporateEvents(params: any, serializedEvents: SerializedEvent[]) : any {
-
     serializedEvents.forEach((v, i) => {
-        params[v.eventName] = () => v.dotNetRef.invokeMethodAsync("InvokableEvent");
+        params[v.eventName] = () => { v.dotNetRef.invokeMethodAsync("InvokableEvent"); console.log("event invoked"); };
     });
-
     return params;
 }
 

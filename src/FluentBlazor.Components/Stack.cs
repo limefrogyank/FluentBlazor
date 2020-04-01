@@ -11,13 +11,24 @@ namespace FluentBlazor.Components
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        [Parameter]
+        public object Tokens { get; set; }
+
+        protected override void OnInitialized()
+        {
+            ComponentName = "Stack";
+            base.OnInitialized();
+        }
+
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();
 
             if (!FluentComponentAttributes.ContainsKey("componentName"))
                 FluentComponentAttributes.Add("componentName", "Stack");
-          
+
+            FluentComponentAttributes["tokens"] = Tokens;
+
         }
     }
 }
