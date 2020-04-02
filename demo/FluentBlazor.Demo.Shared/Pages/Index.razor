@@ -33,7 +33,11 @@
     <Dialog Hidden=@dialogIsHidden OnDismiss=@(()=> dialogIsHidden=true) DialogContentProps=@(new { title = "Dialog Test Title" })>
         <FluentText>This is inside the dialog!</FluentText>
     </Dialog>
+
 </Stack>
+
+<FluentText Variant="large">How about a DetailsList with 100,000 items?</FluentText>
+<DetailsList Items=@items Columns=@(new List<object> { new { key = "column1", name="Key", fieldName="key", maxWidth=200}, new { key = "column2", name="Name", fieldName="name"} }) />
 
 
 @code{
@@ -42,4 +46,22 @@
 
     bool isChecked = false;
     bool dialogIsHidden = true;
+
+    List<DataItem> items;
+
+    class DataItem
+    {
+        public string key { get; set; }
+        public string name { get; set; }
+    }
+
+    protected override void OnInitialized()
+    {
+        items = new List<DataItem>();
+        for (var i = 0; i < 100000; i++)
+        {
+            items.Add(new DataItem { key = i.ToString(), name = Guid.NewGuid().ToString() });
+        }
+        base.OnInitialized();
+    }
 }

@@ -81,6 +81,7 @@ function getTextContent(element) {
 }
 let components = {
     "Checkbox": Checkbox,
+    "DetailsList": window.Fabric.DetailsList,
     "Dialog": window.Fabric.Dialog,
     "FocusZone": FocusZone,
     "PrimaryButton": PrimaryButton,

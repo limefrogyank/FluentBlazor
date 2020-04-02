@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace FluentBlazor.Components
 {
-    public class Stack : FluentBase, IHasChildren
+    public class DetailsList: FluentBase
     {
+      
         [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        public object Items { get; set; }
 
         [Parameter]
-        public object Tokens { get; set; }
+        public object Columns { get; set; }
 
         protected override void OnInitialized()
         {
-            ComponentName = "Stack";
+            ComponentName = "DetailsList";
             base.OnInitialized();
         }
 
@@ -24,10 +25,11 @@ namespace FluentBlazor.Components
         {
             await base.OnParametersSetAsync();
 
-            //if (!FluentComponentAttributes.ContainsKey("componentName"))
-            //    FluentComponentAttributes.Add("componentName", ComponentName);
+            if (!FluentComponentAttributes.ContainsKey("componentName"))
+                FluentComponentAttributes.Add("componentName", ComponentName);
 
-            FluentComponentAttributes["tokens"] = Tokens;
+            FluentComponentAttributes["items"] = Items;
+            FluentComponentAttributes["columns"] = Columns;
 
         }
     }
